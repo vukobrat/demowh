@@ -20,7 +20,7 @@ public class TestFacebookPost {
   private String baseUrl;
   private String username;
   private String password;
-  String message;
+  String post;
   private StringBuffer verificationErrors = new StringBuffer();
   WebDriverWait wait;
 
@@ -30,7 +30,7 @@ public class TestFacebookPost {
     baseUrl = "https://www.facebook.com";
     username = "#";
     password = "#";
-    message = "I like pizza_" + randomString();
+    post = "I like pizza_" + randomString();
     wait = new WebDriverWait(driver, 20);
     driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
   }
@@ -56,17 +56,23 @@ public class TestFacebookPost {
     //2. Login
     login(username, password);
     //3. Post message to profile
-    postToProfile(message);
+    postToProfile(post);
     //4. Assert posted message
-    assertNewPost(message);
+    assertNewPost(post);
   }
 
   
-  private void login(String username, String password) {
-    insertUsername(username);
-    insertPassword(password);
-    clickLoginButton();
-    assertTrue(driver.getTitle().equals("Facebook"));
+  private void login(String username, String password) throws Exception {
+    if(username != null && !username.isEmpty() && password != null && !password.isEmpty() ) {
+      insertUsername(username);
+      insertPassword(password);
+      clickLoginButton();
+      assertTrue(driver.getTitle().equals("Facebook"));
+    }else {
+      throw new Exception("Unvalid credentials.");
+    }
+    
+    
 
   }
 
